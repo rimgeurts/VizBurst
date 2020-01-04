@@ -1,25 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import "./App.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Layout from "./components/Layout";
+import Dashboard from './components/Dashboard'
+import Schedule from './components/Schedule'
 
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      "Roboto",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"'
+    ].join(","),
+    body1: {
+      fontSize: "1em"
+    },
+  },
+  props: {
+    // Name of the component ⚛️
+    MuiButtonBase: {
+      // The properties to apply
+      disableRipple: true, // No more ripple, on the whole application 💣!
+    },
+  },
+});
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Layout>
+          <Switch>
+            <Route path="/dashboard" component={Dashboard} exact />
+            <Route path="/schedules" component={Schedule} />
+            <Route path="/shop" component={'Shop'} />
+          </Switch>
+        </Layout>
+      </div>
+    </ThemeProvider>
   );
 }
 
