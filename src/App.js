@@ -2,9 +2,9 @@ import React from "react";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Layout from "./components/Layout";
-import Dashboard from './components/Dashboard'
-import Schedule from './components/Schedule'
+import Layout from "./layouts/Layout";
+import Dashboard from './layouts/Dashboard'
+import Schedule from './layouts/Schedule'
 
 const theme = createMuiTheme({
   typography: {

@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme, rgbToHex } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -42,8 +42,8 @@ const useStyles = makeStyles(theme => ({
     opacity: "1"
   },
   appBar: {
-    background:
-      "linear-gradient(90deg, rgba(33,33,33,1) 18%, rgba(0,0,0,0.42351466049382713) 99%)",
+    backgroundColor: 'rgba(13, 25, 30, 1)',
+    color: "#FFF",
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -59,10 +59,11 @@ const useStyles = makeStyles(theme => ({
     })
   },
   menuButton: {
-    marginRight: 36
+    marginRight: 36,
+    marginLeft:'-17px'
   },
   hide: {
-    marginLeft: '0px',
+    marginLeft: "0px",
     display: "none"
   },
   drawer: {
@@ -75,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     backdropFilter: "blur(20px)",
     background:
-      "radial-gradient(circle, rgba(0,0,0,.35) 0%, rgba(0,0,0,.45) 100%)",
+      "radial-gradient(circle, rgba(0,0,0,.3) 0%, rgba(0,0,0,.45) 100%)",
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
@@ -112,6 +113,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 1)
   },
   content: {
+    backgroundColor: "rgb(238,238,238)",
     flexGrow: 1,
     padding: theme.spacing(3),
     height: "100vh"
@@ -122,40 +124,39 @@ const useStyles = makeStyles(theme => ({
     border: "0px",
     borderRadius: "3px",
     display: "flex",
-    alignItems: 'center',
+    alignItems: "center",
     width: "100%",
     paddingLeft: ".5em",
     height: "3em",
     marginLeft: "30px",
     marginRight: "20px",
-    marginBottom: '10px',
+    marginBottom: "10px",
     transition: ".25s",
 
     // marginRight: '15px',
     "&:hover": {
-      
       backgroundColor: "rgba(255,255,255,.2)"
-    },
+    }
   },
 
   listitemClosed: {
     border: "0px",
     borderRadius: "3px",
     display: "flex",
-    alignItems: 'center',
+    alignItems: "center",
     width: "60%",
     paddingLeft: ".5em",
     height: "3em",
     marginLeft: "10px",
     marginRight: "10px",
-    marginBottom: '10px',
+    marginBottom: "10px",
     transition: ".25s",
 
     // marginRight: '15px',
     "&:hover": {
       //you want this to be the same as the backgroundColor above
       backgroundColor: "rgba(255,255,255,.2)"
-    },
+    }
   },
 
   listitemprofileOpen: {
@@ -166,7 +167,7 @@ const useStyles = makeStyles(theme => ({
     //border: "1px solid rgba(255,255,255,.1)",
     borderRadius: "3px",
     display: "flex",
-    alignItems: 'center',
+    alignItems: "center",
     width: "100%",
     paddingLeft: ".5em",
     height: "3em",
@@ -193,7 +194,7 @@ const useStyles = makeStyles(theme => ({
     //border: "1px solid rgba(255,255,255,.1)",
     borderRadius: "3px",
     display: "flex",
-    alignItems: 'center',
+    alignItems: "center",
     width: "60%",
     paddingLeft: ".5em",
     height: "3em",
@@ -235,6 +236,29 @@ export default function MiniDrawer(props) {
     <div className={classes.root}>
       <CssBaseline />
       <div className={classes.background}>
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open
+              })}
+            >
+              <MenuIcon style={{ color: "white", margin: 0 }} />
+            </IconButton>
+            <Typography variant="h6" noWrap>
+              Dashboard
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <Drawer
           variant="permanent"
           className={clsx(classes.drawer, {
@@ -250,18 +274,6 @@ export default function MiniDrawer(props) {
           open={open}
         >
           <div className={classes.toolbar}>
-          <IconButton
-              style={{ color: "white" }}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, {
-                [classes.hide]: open
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
             <img
               style={{
                 position: "absolute",
@@ -274,16 +286,15 @@ export default function MiniDrawer(props) {
               alt="dsds"
             />
             <IconButton style={{ color: "white" }} onClick={handleDrawerClose}>
-              {!open  ? (
-                <MenuIcon />
-              ) : (
-                <ChevronLeftIcon />
-              )}
+              {!open ? undefined : <ChevronLeftIcon />}
             </IconButton>
           </div>
 
           <List>
-            <ListItem style={{ padding: "0px", backgroundColor: 'transparent'  }} button>
+            <ListItem
+              style={{ padding: "0px", backgroundColor: "transparent" }}
+              button
+            >
               <div
                 className={clsx({
                   [classes.listitemprofileOpen]: open,
@@ -308,10 +319,14 @@ export default function MiniDrawer(props) {
             {["Dashboard", "Schedules", "Templates", "Mailing Lists"].map(
               (text, index) => (
                 <Link
-                  style={{ textDecoration: "none", color: 'none' }}
+                  style={{ textDecoration: "none", color: "none" }}
                   to={`/${text.toLowerCase()}`}
                 >
-                  <ListItem style={{ padding: "0px", backgroundColor: 'transparent'  }} button key={text}>
+                  <ListItem
+                    style={{ padding: "0px", backgroundColor: "transparent" }}
+                    button
+                    key={text}
+                  >
                     <div
                       className={clsx({
                         [classes.listitemOpen]: open,
