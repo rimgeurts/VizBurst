@@ -25,16 +25,16 @@ const Dashboard = () => {
         alignItems="center"
         spacing={5}
       >
-        <Grid className={classes.root} item xs={12} sm={6} md={3} xl={3}>
+        <Grid className={classes.root} item xs={12} sm={6} md={6} xl={3}>
           <Card />
         </Grid>
-        <Grid className={classes.root} item xs={12} sm={6} md={3} xl={3}>
+        <Grid className={classes.root} item xs={12} sm={6} md={6} xl={3}>
           <Card />
         </Grid>
-        <Grid className={classes.root} item xs={12} sm={6} md={3} xl={3}>
+        <Grid className={classes.root} item xs={12} sm={6} md={6} xl={3}>
           <Card />
         </Grid>
-        <Grid className={classes.root} item xs={12} sm={6} md={3} xl={3}>
+        <Grid className={classes.root} item xs={12} sm={6} md={6} xl={3}>
           <Card />
         </Grid>
       </Grid>

@@ -12,9 +12,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   base: {
-    display: 'inline-block',
-    maxWidth: '33%',
-    minWidth: '300px',
     //marginLeft:'20px',
     borderRadius: "6px",
     backgroundColor: "transparent"
@@ -70,7 +67,7 @@ export default function Card() {
         <ScheduleIcon className={classes.icon}> </ScheduleIcon>
       </div>
       <div className={classes.card}>
-        <div className={classes.infoHeader}>Data Usage</div>
+        <div className={classes.infoHeader}>Data Usages</div>
         <p className={classes.infoValue}>49/50 GB</p>
         <Divider />
         <div className={classes.infoBottom}  >Data Usage</div>
