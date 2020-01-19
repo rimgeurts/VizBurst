@@ -70,10 +70,10 @@ export default function Card() {
         <ScheduleIcon className={classes.icon}> </ScheduleIcon>
       </div>
       <div className={classes.card}>
-        <div className={classes.infoHeader}>Data Usage</div>
-        <p className={classes.infoValue}>49/50 GB</p>
+        <div className={classes.infoHeader}>Stats Title</div>
+        <p className={classes.infoValue}>xxx / xxx</p>
         <Divider />
-        <div className={classes.infoBottom}  >Data Usage</div>
+        <div className={classes.infoBottom}  >Info Text</div>
       </div>
     </div>
   );
