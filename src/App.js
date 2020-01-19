@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Dashboard from './layouts/Dashboard'
 import Schedule from './layouts/Schedule'
+import Templates from './layouts/Templates'
 
 const theme = createMuiTheme({
   typography: {
@@ -38,9 +39,9 @@ function App() {
       <div className="App">
         <Layout>
           <Switch>
-            <Route path="/dashboard" component={Dashboard} exact />
-            <Route path="/schedules" component={Schedule} />
-            <Route path="/shop" component={'Shop'} />
+            <Route path="/dashboard" exact component={Dashboard} exact />
+            <Route path="/schedules" exact component={Schedule} />
+            <Route path="/templates" exact component={Templates} />
           </Switch>
         </Layout>
       </div>
