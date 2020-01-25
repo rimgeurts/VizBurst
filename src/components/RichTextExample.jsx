@@ -1,18 +1,36 @@
-import React, { useCallback, useMemo, useState } from "react";
-import isHotkey from "is-hotkey";
-import { Editable, withReact, useSlate, Slate } from "slate-react";
-import { Editor, Transforms, createEditor } from "slate";
-import { withHistory } from "slate-history";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import Icon from "@material-ui/core/Icon";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Image from "./Image";
+import Toolbar from "@material-ui/core/Toolbar";
+import isHotkey from "is-hotkey";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
+import { Rnd } from "react-rnd";
+import { createEditor, Editor, Transforms } from "slate";
+import { withHistory } from "slate-history";
+import imageExtensions from "image-extensions";
+import Context from "../util/Context";
+import isUrl from "is-url";
+import { Resizable, ResizableBox } from 'react-resizable';
+import ImageElement from './ImageNew'
+
+import {
+  Slate,
+  useSlate,
+  Editable,
+  useEditor,
+  useSelected,
+  useFocused,
+  withReact
+} from "slate-react";
+import { css } from "emotion";
 
 const useStyles = makeStyles(theme => ({
+  slate: {
+    marginLeft: "20px",
+    marginRight: "20px"
+  },
   paper: {
     backgroundColor: "white",
     marginTop: "90px",
@@ -51,9 +69,21 @@ const LIST_TYPES = ["numbered-list", "bulleted-list"];
 const RichTextExample = () => {
   const classes = useStyles();
   const [value, setValue] = useState(initialValue);
+  const { state, setState } = React.useContext(Context);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(
+    () => withImages(withHistory(withReact(createEditor()))),
+    []
+  );
+
+  const resize = () => {
+    setState(prevState => {
+      return {
+        width: prevState.width + 10
+      };
+    });
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -67,7 +97,15 @@ const RichTextExample = () => {
               <BlockButton format="block-quote" icon="format_quote" />
               <BlockButton format="numbered-list" icon="format_list_numbered" />
               <BlockButton format="bulleted-list" icon="format_list_bulleted" />
-              <BlockButton format="image" icon="image" />
+              <Button
+                onClick={() => {
+                  resize();
+                }}
+              >
+                {" "}
+                Resize{" "}
+              </Button>
+              <InsertImageButton />
             </Grid>
             <Grid item>
               <MarkButton format="bold" icon="format_bold" />
@@ -81,6 +119,7 @@ const RichTextExample = () => {
         </Toolbar>
 
         <Editable
+          className={classes.slate}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           placeholder="Enter some rich text…"
@@ -143,7 +182,8 @@ const isMarkActive = (editor, format) => {
   return marks ? marks[format] === true : false;
 };
 
-const Element = ({ attributes, children, element }) => {
+const Element = props => {
+  const { attributes, children, element } = props;
   switch (element.type) {
     case "block-quote":
       return <blockquote {...attributes}>{children}</blockquote>;
@@ -175,6 +215,8 @@ const Element = ({ attributes, children, element }) => {
           {children}
         </div>
       );
+    case "image":
+      return <ImageElement {...props} />;
 
     default:
       return <p {...attributes}>{children}</p>;
@@ -237,6 +279,73 @@ const MarkButton = ({ format, icon }) => {
   );
 };
 
+export const withImages = editor => {
+  const { insertData, isVoid } = editor;
+
+  editor.isVoid = element => {
+    return element.type === "image" ? true : isVoid(element);
+  };
+
+  editor.insertData = data => {
+    const text = data.getData("text/plain");
+    const { files } = data;
+
+    if (files && files.length > 0) {
+      for (const file of files) {
+        const reader = new FileReader();
+        const [mime] = file.type.split("/");
+        console.log("image is: ", file);
+        if (mime === "image") {
+          reader.addEventListener("load", () => {
+            const url = reader.result;
+            insertImage(editor, url);
+          });
+
+          reader.readAsDataURL(file);
+        }
+      }
+    } else if (isImageUrl(text)) {
+      console.log("tets");
+      insertImage(editor, text);
+    } else {
+      insertData(data);
+    }
+  };
+
+  return editor;
+};
+
+const insertImage = (editor, url) => {
+  const text = { text: "" };
+  const image = { type: "images", url, children: [text] };
+  Transforms.insertNodes(editor, image);
+};
+
+
+const isImageUrl = url => {
+  console.log("test");
+  if (!url) return false;
+  if (!isUrl(url)) return false;
+  const ext = new URL(url).pathname.split(".").pop();
+  return imageExtensions.includes(ext);
+};
+
+const InsertImageButton = () => {
+  const editor = useEditor();
+  return (
+    <Button
+      onMouseDown={event => {
+        event.preventDefault();
+        const url = window.prompt("Enter the URL of the image:");
+        if (!url) return;
+        insertImage(editor, url);
+      }}
+    >
+      <Icon>image</Icon>
+    </Button>
+  );
+};
+
 const initialValue = [
   {
     type: "paragraph",
@@ -260,9 +369,15 @@ const initialValue = [
       { text: "bold", bold: true },
       {
         text:
-          ", or add a semantically rendered block quote in the middle of the page, like this:"
+          ", or add a semantically rendered block quote insertImage the middle of the page, like this:"
       }
     ]
+  },
+  {
+    type: "image",
+    width: "100%",
+    url: "https://source.unsplash.com/kFrdX5IeQzI",
+    children: [{ text: "" }]
   },
   {
     type: "block-quote",
@@ -271,7 +386,13 @@ const initialValue = [
   {
     type: "paragraph",
     children: [{ text: "Try it out for yourself!" }]
-  }
+  },
+  {
+    type: "image",
+    width: "100%",
+    url: "https://source.unsplash.com/kFrdX5IeQzI",
+    children: [{ text: "" }]
+  },
 ];
 
 export default RichTextExample;

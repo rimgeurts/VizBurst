@@ -36,7 +36,7 @@ const Image = () => {
   );
 };
 
-const withImages = editor => {
+export const withImages = editor => {
   const { insertData, isVoid } = editor;
 
   editor.isVoid = element => {
@@ -75,7 +75,9 @@ const withImages = editor => {
 const insertImage = (editor, url) => {
   const text = { text: "" };
   const image = { type: "image", url, children: [text] };
+  console.log("Hello");
   Transforms.insertNodes(editor, image);
+  const i = 0;
 };
 
 const Element = props => {
@@ -96,6 +98,7 @@ const ImageElement = ({ attributes, children, element }) => {
     <div {...attributes}>
       <div contentEditable={false}>
         <img
+          alt=""
           src={element.url}
           className={css`
             display: block;
