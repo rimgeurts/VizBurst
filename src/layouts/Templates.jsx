@@ -1,8 +1,8 @@
 import React from "react";
-import RichTextExample from "../components/RichTextExample";
+import Editor from "../components/Editor/Editor";
 
 const Templates = () => {
-  return <RichTextExample />;
+  return <Editor />;
 };
 
 export default Templates;
