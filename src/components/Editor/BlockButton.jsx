@@ -4,15 +4,24 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Editor, Transforms } from "slate";
 import { useSlate } from "slate-react";
+import ToolbarIcon from './ToolbarIcon'
 
 const useStyles = makeStyles(theme => ({
   icon: {
-    fontSize: "1em",
+    color: '#4c4c4c',
+    backgroundColor: "white",
+    border: "1px solid #bfbfbf",
+    borderRadius: "5px", 
+    display: "block",
+    height: "30px",
+    width: "30px",
+    //fontSize: "15px",
     //border: "1px solid white",
-    //padding: "5px",
-    textAlign: "center"
+   // padding: "5px",
+    textAlign: "center",
     //color: "white",
     //boxSizing: "content-box"
+    margin: "2px"
   }
 }));
 
@@ -49,17 +58,15 @@ const BlockButton = ({ format, icon }) => {
   const classes = useStyles();
   const editor = useSlate();
   return (
-    <Button
+    <ToolbarIcon
+      icon={icon}
       active={isBlockActive(editor, format)}
       onMouseDown={event => {
         event.preventDefault();
         toggleBlock(editor, format);
       }}
     >
-      <Icon className={classes.icon} fontSize="small">
-        {icon}
-      </Icon>
-    </Button>
+    </ToolbarIcon>
   );
 };
 

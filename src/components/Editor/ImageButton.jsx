@@ -12,33 +12,37 @@ import { createEditor, Transforms } from "slate";
 import { withHistory } from "slate-history";
 import { Editable, Slate, useEditor, withReact } from "slate-react";
 import Context from "../../util/Context";
-import BlockButton from './BlockButton';
+import BlockButton from "./BlockButton";
 import Element from "./Element";
 import Leaf from "./Leaf";
-import MarkButton, { toggleMark } from './MarkButton';
+import MarkButton, { toggleMark } from "./MarkButton";
+import ToolbarIcon from "./ToolbarIcon";
 
 export const insertImage = (editor, url) => {
-    const text = { text: "" };
-    const image = { type: "image", url, children: [text] };
-    Transforms.insertNodes(editor, image);
-  };
-  
-  
-  
-  const InsertImageButton = () => {
-    const editor = useEditor();
-    return (
-      <Button
-        onMouseDown={event => {
-          event.preventDefault();
-          const url = window.prompt("Enter the URL of the image:");
-          if (!url) return;
-          insertImage(editor, url);
-        }}
-      >
-        <Icon>image</Icon>
-      </Button>
-    );
-  };
+  const text = { text: "" };
+  const image = { type: "image", url, children: [text] };
+  Transforms.insertNodes(editor, image);
+};
 
-  export default InsertImageButton;
+const useStyles = makeStyles(theme => ({
+}));
+
+const InsertImageButton = () => {
+  const classes = useStyles();
+  const editor = useEditor();
+  return (
+    <ToolbarIcon
+      icon="image"
+      onMouseDown={event => {
+        event.preventDefault();
+        const url = window.prompt("Enter the URL of the image:");
+        if (!url) return;
+        insertImage(editor, url);
+      }}
+    >
+      image
+    </ToolbarIcon>
+  );
+};
+
+export default InsertImageButton;

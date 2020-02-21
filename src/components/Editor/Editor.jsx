@@ -76,12 +76,14 @@ const useStyles = makeStyles(theme => ({
     minHeight: "75%"
   },
   toolbar: {
-    //backgroundColor: "grey"
+    //backgroundColor: "grey",
     borderBottom: "1px solid lightgrey",
-    marginLeft: "20px",
-    marginRight: "20px"
+    marginLeft: "0px",
+    marginRight: "0px"
   },
   container: {
+    //height: "100px",
+    //backgroundColor: 'white',
     marginTop: "10px",
     marginBottom: "10px"
   }
@@ -105,28 +107,49 @@ const Editor = () => {
     []
   );
 
+  const onMouseMove = e => {};
   return (
-    <Paper
-      className={classes.paper}
-    >
+    <Paper className={classes.paper} onMouseMove={onMouseMove}>
       <Slate editor={editor} value={value} onChange={value => setValue(value)}>
         <Toolbar variant="dense" className={classes.toolbar}>
           <Grid container className={classes.container}>
             <Grid item>
               <MarkButton format="code" icon="code" />
+            </Grid>
+            <Grid item>
               <BlockButton format="heading-one" icon="looks_one" />
+            </Grid>
+            <Grid item>
               <BlockButton format="heading-two" icon="looks_two" />
+            </Grid>
+            <Grid item>
               <BlockButton format="block-quote" icon="format_quote" />
+            </Grid>
+            <Grid item>
               <BlockButton format="numbered-list" icon="format_list_numbered" />
+            </Grid>
+            <Grid item>
               <BlockButton format="bulleted-list" icon="format_list_bulleted" />
+            </Grid>
+            <Grid item>
               <InsertImageButton />
             </Grid>
             <Grid item>
               <MarkButton format="bold" icon="format_bold" />
+            </Grid>
+            <Grid item>
               <MarkButton format="italic" icon="format_italic" />
+            </Grid>
+            <Grid item>
               <MarkButton format="underline" icon="format_underlined" />
+            </Grid>
+            <Grid item>
               <BlockButton format="left-align" icon="format_align_left" />
+            </Grid>
+            <Grid item>
               <BlockButton format="center-align" icon="format_align_center" />
+            </Grid>
+            <Grid item>
               <BlockButton format="right-align" icon="format_align_right" />
             </Grid>
           </Grid>
