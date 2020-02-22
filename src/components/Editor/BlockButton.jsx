@@ -5,23 +5,25 @@ import React from "react";
 import { Editor, Transforms } from "slate";
 import { useSlate } from "slate-react";
 import ToolbarIcon from './ToolbarIcon'
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   icon: {
-    color: '#4c4c4c',
+    color: "#4c4c4c",
     backgroundColor: "white",
-    border: "1px solid #bfbfbf",
-    borderRadius: "5px", 
-    display: "block",
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     height: "30px",
     width: "30px",
-    //fontSize: "15px",
+    fontSize: "1.1em",
     //border: "1px solid white",
-   // padding: "5px",
+    //padding: "5px",
     textAlign: "center",
     //color: "white",
     //boxSizing: "content-box"
-    margin: "2px"
+    margin: "0px"
   }
 }));
 
@@ -58,15 +60,20 @@ const BlockButton = ({ format, icon }) => {
   const classes = useStyles();
   const editor = useSlate();
   return (
-    <ToolbarIcon
+    <Grid item>
+    <Icon
       icon={icon}
-      active={isBlockActive(editor, format)}
+      className={classes.icon}
+      //active={isBlockActive(editor, format)}
       onMouseDown={event => {
         event.preventDefault();
         toggleBlock(editor, format);
       }}
     >
-    </ToolbarIcon>
+    {icon}
+    </Icon>
+    </Grid>
+    
   );
 };
 

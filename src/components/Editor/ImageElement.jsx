@@ -2,7 +2,7 @@ import { css } from "emotion";
 import styled from "@emotion/styled";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import { useFocused, useSelected } from "slate-react";
 import Context from "../../util/Context";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,39 +35,41 @@ const useStyles = makeStyles(theme => ({
 const ImageElement = ({ attributes, children, element }) => {
   const classes = useStyles();
   const { state, setState } = React.useContext(Context);
-  const [width, setWidth] = React.useState(100);
+  const [width, setWidth] = React.useState(75);
   const [mouseOnImageToolBar, setMouseOnImageToolBar] = React.useState(false);
   const [location, setLocation] = React.useState({ x: 0, y: 0 });
   const [display, setDisplay] = React.useState("none");
   const selected = useSelected();
   const focused = useFocused();
+  const imageRef = useRef();
+  const imageToolbarRef = useRef();
 
-  const onMouseDown = e => {
+  const onClickOutside = e => {
+    e.preventDefault();
+    console.log("imageToolbarRef", imageToolbarRef);
+    console.log("target", e.target);
+    console.log("MATCH", imageToolbarRef.current.contains(e.target));
+    if (
+      !imageRef.current.contains(e.target) &&
+      !imageToolbarRef.current.contains(e.target)
+    ) {
+      setDisplay("none");
+     document.removeEventListener("mousedown", onClickOutside);
+    }
+  };
+
+  const onClickInside = e => {
+    e.preventDefault();
+    console.log("Clicked Inside on ImageRef: ", imageRef.current);
+    document.addEventListener("mousedown", onClickOutside);
+
     setDisplay("block");
     setLocation({
       x: e.clientX - e.target.getBoundingClientRect().x,
       y: e.clientY - e.target.getBoundingClientRect().y
     });
 
-    console.log(e.target.nodeName);
-  };
-
-  React.useEffect(() => {
-    if (mouseOnImageToolBar) {
-      setDisplay("block");
-    } else {
-      setDisplay("none");
-    }
-  }, [mouseOnImageToolBar]);
-
-  const onMouseLeave = () => {
-    setDisplay("none");
-    console.log("Mouse LEft");
-    setMouseOnImageToolBar(false);
-  };
-
-  const onMouseEnter = () => {
-    setMouseOnImageToolBar(true);
+    //
   };
 
   const button = css`
@@ -77,11 +79,12 @@ const ImageElement = ({ attributes, children, element }) => {
       background-color: #333333;
     }
   `;
-
   return (
     <div {...attributes} className={classes.parent}>
-      <div onMouseDown={onMouseDown} contentEditable={false}>
+      <div contentEditable={false}>
         <img
+          ref={imageRef}
+          onClick={onClickInside}
           alt=""
           src={element.url}
           className={css`
@@ -93,8 +96,9 @@ const ImageElement = ({ attributes, children, element }) => {
           `}
         />
       </div>
+
       <div
-        on={onMouseLeave}
+        ref={imageToolbarRef}
         className={css`
           display: ${display};
           padding: 0px;
@@ -106,11 +110,7 @@ const ImageElement = ({ attributes, children, element }) => {
           left: ${location.x}px;
         `}
       >
-        <div
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          className={classes.root}
-        >
+        <div className={classes.root}>
           <ButtonGroup
             variant="contained"
             aria-label="contained primary button group"

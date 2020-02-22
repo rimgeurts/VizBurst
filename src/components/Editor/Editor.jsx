@@ -59,7 +59,8 @@ const initialValue = [
   {
     type: "image",
     width: "100%",
-    url: "https://source.unsplash.com/kFrdX5IeQzI",
+    url:
+      "https://images.unsplash.com/photo-1577798582154-af6ffc97b7c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1955&q=80",
     children: [{ text: "" }]
   }
 ];
@@ -86,6 +87,17 @@ const useStyles = makeStyles(theme => ({
     //backgroundColor: 'white',
     marginTop: "10px",
     marginBottom: "10px"
+  },
+  group: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: "hidden",
+    display: "flex",
+    border: "1px solid #bfbfbf",
+    borderRadius: "5px",
+    marginRight: "5px",
+    height: "30px",
+    width: "auto",
   }
 }));
 
@@ -107,50 +119,95 @@ const Editor = () => {
     []
   );
 
+  const toolbar = [
+    { type: "block", format: "heading-one", icon: "looks_one" },
+    { type: "block", format: "heading-two", icon: "looks_two" },
+
+    { type: "block", format: "numbered-list", icon: "format_list_numbered" },
+    { type: "block", format: "bulleted-list", icon: "format_list_bulleted" },
+    { type: "mark", format: "bold", icon: "format_bold" },
+    { type: "mark", format: "italic", icon: "format_italic" },
+    { type: "mark", format: "underline", icon: "format_underlined" },
+    { type: "block", format: "left-align", icon: "format_align_left" },
+    { type: "block", format: "center-align", icon: "format_align_center" },
+    { type: "block", format: "right-align", icon: "format_align_right" }
+  ];
+
+  const toolbarAlign = [
+    { type: "block", format: "left-align", icon: "format_align_left" },
+    { type: "block", format: "center-align", icon: "format_align_center" },
+    { type: "block", format: "right-align", icon: "format_align_right" }
+  ];
+
+  const toolbarStyle = [
+    { type: "mark", format: "bold", icon: "format_bold" },
+    { type: "mark", format: "italic", icon: "format_italic" },
+    { type: "mark", format: "underline", icon: "format_underlined" }
+  ];
+
+  const toolbarBullet = [
+    { type: "block", format: "numbered-list", icon: "format_list_numbered" },
+    { type: "block", format: "bulleted-list", icon: "format_list_bulleted" }
+  ];
+
+  const toolbarHeading = [
+    { type: "block", format: "heading-one", icon: "looks_one" },
+    { type: "block", format: "heading-two", icon: "looks_two" }
+  ];
+
+  const toolbarQuote = [
+    { type: "mark", format: "code", icon: "code" },
+    { type: "block", format: "block-quote", icon: "format_quote" },
+  ]
+
   const onMouseMove = e => {};
   return (
     <Paper className={classes.paper} onMouseMove={onMouseMove}>
       <Slate editor={editor} value={value} onChange={value => setValue(value)}>
         <Toolbar variant="dense" className={classes.toolbar}>
           <Grid container className={classes.container}>
-            <Grid item>
+            <Grid item className={classes.group}>
+              {toolbarAlign.map((value, index) =>
+                value.type === "block" ? (
+                  <BlockButton format={value.format} icon={value.icon} />
+                ) : (
+                  undefined
+                )
+              )}
+            </Grid>
+            <Grid item className={classes.group}>
+              {toolbarStyle.map((value, index) =>
+                value.type === "mark" ? (
+                  <MarkButton format={value.format} icon={value.icon} />
+                ) : (
+                  undefined
+                )
+              )}
+            </Grid>
+            <Grid item className={classes.group}>
+              {toolbarBullet.map((value, index) =>
+                value.type === "block" ? (
+                  <BlockButton format={value.format} icon={value.icon} />
+                ) : (
+                  undefined
+                )
+              )}
+            </Grid>
+            <Grid item className={classes.group}>
+              {toolbarHeading.map((value, index) =>
+                value.type === "block" ? (
+                  <BlockButton format={value.format} icon={value.icon} />
+                ) : (
+                  undefined
+                )
+              )}
+            </Grid>
+            <Grid item className={classes.group}>
               <MarkButton format="code" icon="code" />
-            </Grid>
-            <Grid item>
-              <BlockButton format="heading-one" icon="looks_one" />
-            </Grid>
-            <Grid item>
-              <BlockButton format="heading-two" icon="looks_two" />
-            </Grid>
-            <Grid item>
               <BlockButton format="block-quote" icon="format_quote" />
             </Grid>
             <Grid item>
-              <BlockButton format="numbered-list" icon="format_list_numbered" />
-            </Grid>
-            <Grid item>
-              <BlockButton format="bulleted-list" icon="format_list_bulleted" />
-            </Grid>
-            <Grid item>
               <InsertImageButton />
-            </Grid>
-            <Grid item>
-              <MarkButton format="bold" icon="format_bold" />
-            </Grid>
-            <Grid item>
-              <MarkButton format="italic" icon="format_italic" />
-            </Grid>
-            <Grid item>
-              <MarkButton format="underline" icon="format_underlined" />
-            </Grid>
-            <Grid item>
-              <BlockButton format="left-align" icon="format_align_left" />
-            </Grid>
-            <Grid item>
-              <BlockButton format="center-align" icon="format_align_center" />
-            </Grid>
-            <Grid item>
-              <BlockButton format="right-align" icon="format_align_right" />
             </Grid>
           </Grid>
         </Toolbar>

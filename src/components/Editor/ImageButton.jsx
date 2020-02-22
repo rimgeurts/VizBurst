@@ -25,14 +25,32 @@ export const insertImage = (editor, url) => {
 };
 
 const useStyles = makeStyles(theme => ({
+  icon: {
+    color: "#4c4c4c",
+    backgroundColor: "white",
+    border: "1px solid #bfbfbf",
+    borderRadius: "5px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "30px",
+    width: "30px",
+    fontSize: "1em",
+    //border: "1px solid white",
+    //padding: "5px",
+    textAlign: "center",
+    //color: "white",
+    //boxSizing: "content-box"
+    margin: "2px"
+  }
 }));
 
 const InsertImageButton = () => {
   const classes = useStyles();
   const editor = useEditor();
   return (
-    <ToolbarIcon
-      icon="image"
+    <Icon
+      className={classes.icon}
       onMouseDown={event => {
         event.preventDefault();
         const url = window.prompt("Enter the URL of the image:");
@@ -41,7 +59,7 @@ const InsertImageButton = () => {
       }}
     >
       image
-    </ToolbarIcon>
+    </Icon>
   );
 };
 

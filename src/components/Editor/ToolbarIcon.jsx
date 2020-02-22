@@ -16,7 +16,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "white",
     border: "1px solid #bfbfbf",
     borderRadius: "5px",
-    display: "block",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     height: "30px",
     width: "30px",
     fontSize: "1em",
@@ -29,10 +31,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ToolbarIcon = ({icon}) => {
+const ToolbarIcon = ({icon, onClick}) => {
   const classes = useStyles();
   const editor = useEditor();
-  return <Icon className={classes.icon}>{icon}</Icon>;
+  return <Icon onClick={onClick} className={classes.icon}>{icon}</Icon>;
 };
 
 export default ToolbarIcon;
