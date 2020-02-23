@@ -23,7 +23,10 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     //color: "white",
     //boxSizing: "content-box"
-    margin: "0px"
+    margin: "0px",
+    '&:hover': {
+      background: "#f7f7f7",
+   },
   }
 }));
 

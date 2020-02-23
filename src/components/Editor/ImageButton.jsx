@@ -28,8 +28,6 @@ const useStyles = makeStyles(theme => ({
   icon: {
     color: "#4c4c4c",
     backgroundColor: "white",
-    border: "1px solid #bfbfbf",
-    borderRadius: "5px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -41,7 +39,10 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     //color: "white",
     //boxSizing: "content-box"
-    margin: "2px"
+    margin: "2px",
+    '&:hover': {
+      background: "#f7f7f7",
+   },
   }
 }));
 

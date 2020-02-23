@@ -13,6 +13,7 @@ import Element from "./Element";
 import InsertImageButton from "./ImageButton";
 import Leaf from "./Leaf";
 import MarkButton, { toggleMark } from "./MarkButton";
+import StyleButton from "./StyleButton";
 import { withImages } from "./WithImagesPlugin";
 
 const initialValue = [
@@ -89,15 +90,15 @@ const useStyles = makeStyles(theme => ({
     marginBottom: "10px"
   },
   group: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     overflow: "hidden",
     display: "flex",
     border: "1px solid #bfbfbf",
     borderRadius: "5px",
     marginRight: "5px",
     height: "30px",
-    width: "auto",
+    width: "auto"
   }
 }));
 
@@ -118,20 +119,6 @@ const Editor = () => {
     () => withImages(withHistory(withReact(createEditor()))),
     []
   );
-
-  const toolbar = [
-    { type: "block", format: "heading-one", icon: "looks_one" },
-    { type: "block", format: "heading-two", icon: "looks_two" },
-
-    { type: "block", format: "numbered-list", icon: "format_list_numbered" },
-    { type: "block", format: "bulleted-list", icon: "format_list_bulleted" },
-    { type: "mark", format: "bold", icon: "format_bold" },
-    { type: "mark", format: "italic", icon: "format_italic" },
-    { type: "mark", format: "underline", icon: "format_underlined" },
-    { type: "block", format: "left-align", icon: "format_align_left" },
-    { type: "block", format: "center-align", icon: "format_align_center" },
-    { type: "block", format: "right-align", icon: "format_align_right" }
-  ];
 
   const toolbarAlign = [
     { type: "block", format: "left-align", icon: "format_align_left" },
@@ -157,8 +144,8 @@ const Editor = () => {
 
   const toolbarQuote = [
     { type: "mark", format: "code", icon: "code" },
-    { type: "block", format: "block-quote", icon: "format_quote" },
-  ]
+    { type: "block", format: "block-quote", icon: "format_quote" }
+  ];
 
   const onMouseMove = e => {};
   return (
@@ -206,9 +193,12 @@ const Editor = () => {
               <MarkButton format="code" icon="code" />
               <BlockButton format="block-quote" icon="format_quote" />
             </Grid>
-            <Grid item>
+            <Grid item className={classes.group}>
               <InsertImageButton />
             </Grid>
+  
+              <StyleButton />
+    
           </Grid>
         </Toolbar>
 
